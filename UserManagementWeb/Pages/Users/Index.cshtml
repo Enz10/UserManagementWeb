@@ -10,45 +10,45 @@
         table-layout: fixed;
     }
 
-        .users-table th,
-        .users-table td {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding: 8px;
-        }
+    .users-table th,
+    .users-table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 8px;
+    }
 
-        .users-table .col-name {
-            width: 120px;
-        }
+    .users-table .col-name {
+        width: 120px;
+    }
 
-        .users-table .col-age {
-            width: 60px;
-        }
+    .users-table .col-age {
+        width: 60px;
+    }
 
-        .users-table .col-country {
-            width: 120px;
-        }
+    .users-table .col-country {
+        width: 120px;
+    }
 
-        .users-table .col-province {
-            width: 100px;
-        }
+    .users-table .col-province {
+        width: 100px;
+    }
 
-        .users-table .col-city {
-            width: 100px;
-        }
+    .users-table .col-city {
+        width: 100px;
+    }
 
-        .users-table .col-email {
-            width: 240px;
-        }
+    .users-table .col-email {
+        width: 240px;
+    }
 
-        .users-table .col-created-at {
-            width: 100px;
-        }
+    .users-table .col-created-at {
+        width: 180px;
+    }
 
-        .users-table .col-actions {
-            width: 160px;
-        }
+    .users-table .col-actions {
+        width: 160px;
+    }
 
     .table-responsive {
         overflow-x: auto;
@@ -100,7 +100,7 @@
                     <td class="col-province">@user.Province</td>
                     <td class="col-city">@user.City</td>
                     <td class="col-email">@user.Email</td>
-                    <td class="col-created-at">@user.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td class="col-created-at">@user.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td class="col-actions">
                         <a asp-page="./Edit" asp-route-id="@user.Id" class="btn btn-sm btn-primary">Edit</a>
                         <a asp-page="./Delete" asp-route-id="@user.Id" class="btn btn-sm btn-danger">Delete</a>
@@ -133,4 +133,5 @@
 
 <div class="mt-3">
     <a asp-page="./Create" class="btn btn-success">Create New User</a>
+    <a asp-page="./BulkCreate" class="btn btn-primary">Bulk Create Users</a>
 </div>

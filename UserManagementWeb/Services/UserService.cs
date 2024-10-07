@@ -1,4 +1,7 @@
 using System.Text.Json;
+using UserManagementWeb.Dtos.Responses;
+using UserManagementWeb.Dtos.User;
+using UserManagementWeb.Interfaces;
 
 namespace UserManagementWeb.Services;
 
@@ -49,9 +52,9 @@ public class UserService : IUserService
         return await response.Content.ReadFromJsonAsync<UserDto>();
     }
 
-    public async Task<IEnumerable<UserDto>> CreateUsersAsync(IEnumerable<UserDto> users)
+    public async Task<IEnumerable<UserDto>> CreateUsersAsync(CreateUsersDto command)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/user/bulk-create", users);
+        var response = await _httpClient.PostAsJsonAsync("api/user/bulk-create", command);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<IEnumerable<UserDto>>();
     }

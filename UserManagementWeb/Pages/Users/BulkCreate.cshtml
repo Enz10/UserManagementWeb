@@ -1,0 +1,108 @@
+﻿@page
+@model UserManagementWeb.Pages.Users.BulkCreateModel
+@{
+    ViewData["Title"] = "Bulk Create Users";
+}
+
+<h1>Bulk Create Users</h1>
+
+<form method="post" id="bulkCreateForm">
+    <div id="userForms">
+        @for (int i = 0; i < Model.Users.Count; i++)
+        {
+            <div class="user-form mb-4">
+                <h4>User @(i + 1)</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Users[i].FirstName" class="control-label"></label>
+                            <input asp-for="Users[i].FirstName" class="form-control" />
+                            <span asp-validation-for="Users[i].FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].LastName" class="control-label"></label>
+                            <input asp-for="Users[i].LastName" class="form-control" />
+                            <span asp-validation-for="Users[i].LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].Age" class="control-label"></label>
+                            <input asp-for="Users[i].Age" class="form-control" type="number" />
+                            <span asp-validation-for="Users[i].Age" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].Country" class="control-label"></label>
+                            <input asp-for="Users[i].Country" class="form-control" />
+                            <span asp-validation-for="Users[i].Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Users[i].Province" class="control-label"></label>
+                            <input asp-for="Users[i].Province" class="form-control" />
+                            <span asp-validation-for="Users[i].Province" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].City" class="control-label"></label>
+                            <input asp-for="Users[i].City" class="form-control" />
+                            <span asp-validation-for="Users[i].City" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].Email" class="control-label"></label>
+                            <input asp-for="Users[i].Email" class="form-control" type="email" />
+                            <span asp-validation-for="Users[i].Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Users[i].Password" class="control-label"></label>
+                            <input asp-for="Users[i].Password" class="form-control" type="password" />
+                            <span asp-validation-for="Users[i].Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <button type="button" id="addUser" class="btn btn-secondary">Add Another User</button>
+    <button type="submit" class="btn btn-primary">Create Users</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            var userCount = @Model.Users.Count;
+            var maxUsers = 1000;
+
+            $("#addUser").click(function () {
+                if (userCount < maxUsers) {
+                    var newUserForm = $(".user-form").first().clone();
+                    newUserForm.find("input").val("");
+                    newUserForm.find("h4").text("User " + (userCount + 1));
+
+                    newUserForm.find("input, select").each(function () {
+                        var oldName = $(this).attr("name");
+                        var oldId = $(this).attr("id");
+                        var newName = oldName.replace("[0]", "[" + userCount + "]");
+                        var newId = oldId.replace("_0_", "_" + userCount + "_");
+                        $(this).attr("name", newName);
+                        $(this).attr("id", newId);
+                    });
+
+                    newUserForm.find("span[data-valmsg-for]").each(function () {
+                        var oldFor = $(this).attr("data-valmsg-for");
+                        var newFor = oldFor.replace("[0]", "[" + userCount + "]");
+                        $(this).attr("data-valmsg-for", newFor);
+                    });
+
+                    $("#userForms").append(newUserForm);
+                    userCount++;
+
+                    if (userCount >= maxUsers) {
+                        $("#addUser").prop("disabled", true);
+                    }
+                }
+            });
+        });
+    </script>
+}

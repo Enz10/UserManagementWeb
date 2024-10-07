@@ -1,20 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UserManagementWeb.Services;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using UserManagementWeb.Dtos.User;
+using UserManagementWeb.Interfaces;
 
 namespace UserManagementWeb.Pages.Users
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly IUserService _userService;
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(IUserService userService, ILogger<IndexModel> logger)
-        {
-            _userService = userService;
-            _logger = logger;
-        }
+        public IndexModel(IUserService userService) => _userService = userService;
 
         public IEnumerable<UserDto> Users { get; set; } = new List<UserDto>();
         public int TotalPages { get; set; }
@@ -33,20 +30,13 @@ namespace UserManagementWeb.Pages.Users
 
         public async Task OnGetAsync([FromQuery] int? page)
         {
-            _logger.LogInformation($"Query string: {HttpContext.Request.QueryString}");
-            _logger.LogInformation($"Received page parameter: {page}");
-
             CurrentPage = page ?? 1;
 
-            _logger.LogInformation($"Fetching page {CurrentPage}");
 
             var result = await _userService.GetUsersAsync(CurrentPage, PageSize, Age, Country);
             Users = result.Items;
             TotalPages = result.TotalPages;
             TotalCount = result.TotalCount;
-
-            _logger.LogInformation($"Received {Users.Count()} users. Total pages: {TotalPages}, Total count: {TotalCount}");
-            _logger.LogInformation($"Final CurrentPage: {CurrentPage}");
         }
     }
 }

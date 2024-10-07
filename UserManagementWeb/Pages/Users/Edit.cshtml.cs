@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using UserManagementWeb.Services;
+using UserManagementWeb.Dtos.User;
+using UserManagementWeb.Interfaces;
 
 namespace UserManagementWeb.Pages.Users;
 
@@ -8,10 +9,7 @@ public class EditModel : PageModel
 {
     private readonly IUserService _userService;
 
-    public EditModel(IUserService userService)
-    {
-        _userService = userService;
-    }
+    public EditModel(IUserService userService) => _userService = userService;
 
     [BindProperty]
     public UserDto User { get; set; }
